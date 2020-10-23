@@ -1,6 +1,22 @@
 'use strict';
 let ack = 0;
+let count =0;
+let lastData = [];
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
 
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
 function sleep(ms) {
     return new Promise(
         resolve => setTimeout(resolve, ms),
@@ -32,10 +48,22 @@ Entry.GENIBOT = {
     // },
     afterReceive: function(pd) {
         // console.log("HELLO I received",pd);
-        if (pd['BUTTON'] == '1') {
-            Entry.engine.fireEvent('buttonPressed');
+        if (pd['BUTTON']) {
+            const a = pd['BUTTON']
+            // if(a.data.length ==25 || a.data.length ==29)
+            if(!arraysEqual(a.data,lastData)){
+                lastData = a.data;
+                console.log(count++,")\n",lastData);
+            }
+
+            // Entry.engine.fireEvent('buttonPressed');
         }
-        delete pd.BUTTON;
+        if(pd['LOGGER'] && pd['LOGGER'].list.length > 0){
+            console.log("pd['LOGGER']",pd['LOGGER']);
+        }
+        // await sleep(1000);
+        // delete pd.BUTTON;
+
     },
     // monitorTemplate: {
     //     imgPath: 'hw/arduino.png',
@@ -416,12 +444,14 @@ Entry.GENIBOT.getBlocks = function() {
                 var portData = Entry.hw.portData['BUTTON'];
                 console.log('BUTTON');
                 console.log(portData);
+                console.log(sprite);
+                console.log(script);
                 if (portData) {
                     portData = '0';
                     return script.callReturn();
                     // return true;
                 } else {
-                    return null;
+                    return false;
                 }
             },
             event: 'buttonPressed',
@@ -1257,7 +1287,7 @@ Entry.GENIBOT.getBlocks = function() {
                 const INSTRUMENT = script.getStringField('INSTRUMENT', script);
 
                 console.log('INSTRUMENT', INSTRUMENT);
-                if ( INSTRUMENT) {
+                if (INSTRUMENT) {
                     console.log('INSTRUMENT', script);
 
                     Entry.hw.sendQueue.SET_INSTRUMENT = {
@@ -1392,13 +1422,13 @@ Entry.GENIBOT.getBlocks = function() {
             class: 'geni_input',
             //isNotFor: ['genibot'],
             func: function(sprite, script) {
-                var port = script.getStringField('PORT', script);
-                var portData = Entry.hw.getDigitalPortValue(script.getNumberField('PORT', script));
-                var result;
-                if ($.isPlainObject(portData)) {
-                    result = portData.siValue || 0;
-                }
-                return result;
+                let port = script.getStringField('PORT');
+                console.log("port",port);
+                const ACC_TILT = Entry.hw.getDigitalPortValue('ACC_TILT');
+                const value = ACC_TILT['a' + port.toUpperCase()];
+
+                console.log('value', value);
+                return value || 0;
             },
         },
         getTilt: {
@@ -1417,13 +1447,16 @@ Entry.GENIBOT.getBlocks = function() {
             class: 'geni_input',
             //isNotFor: ['genibot'],
             func: function(sprite, script) {
-                var port = script.getStringField('PORT', script);
-                var portData = Entry.hw.getDigitalPortValue(script.getNumberField('PORT', script));
-                var result;
-                if ($.isPlainObject(portData)) {
-                    result = portData.siValue || 0;
-                }
-                return result;
+                const ACC_TILT = Entry.hw.getDigitalPortValue('ACC_TILT');
+                const tilt = ACC_TILT['tilt'];
+                // const aX = ACC_TILT['aX']
+                console.log('tilt', tilt);
+                // console.log('aX',aX);
+                // var result;
+                // if ($.isPlainObject(portData)) {
+                //     result = portData.siValue || 0;
+                // }
+                return tilt || 0;
             },
         },
         getOidCode: {
@@ -1444,13 +1477,13 @@ Entry.GENIBOT.getBlocks = function() {
             class: 'geni_input',
             //isNotFor: ['genibot'],
             func: function(sprite, script) {
-                var port = script.getStringField('PORT', script);
-                var portData = Entry.hw.getDigitalPortValue(script.getNumberField('PORT', script));
-                var result;
-                if ($.isPlainObject(portData)) {
-                    result = portData.siValue || 0;
-                }
-                return result;
+                const OIDCODE = Entry.hw.getDigitalPortValue('OIDCODE');
+                console.log('OIDCODE', OIDCODE);
+                // var result;
+                // if ($.isPlainObject(portData)) {
+                //     result = portData.siValue || 0;
+                // }
+                return OIDCODE || 0;
             },
         },
 
