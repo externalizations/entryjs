@@ -356,7 +356,7 @@ class mechatro {
                     PORT: 1,
                 },
                 class: 'MechatroStart',
-                isNotFor: ['mechatro'],
+                //isNotFor: ['mechatro'],
                 event: 'event_digital_input_is_rising',
                 func(sprite, script) {
                     const portNo = script.getNumberField('PORT', script);

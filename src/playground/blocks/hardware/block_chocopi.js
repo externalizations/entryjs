@@ -216,7 +216,7 @@ Entry.Chocopi.getBlocks = function () {
             def: { params: [], type: 'chocopi_touch_event' },
             paramsKeyMap: { port: 1, id: 2, status: 3 },
             class: 'chocopi_touch',
-            isNotFor: ['chocopi'],
+            // isNotFor: ['chocopi'],
             event: 'touch14',
             func: function(sprite, script) {
                 var port = Entry.Chocopi.getport(9, script.getField('port'));
@@ -431,7 +431,7 @@ Entry.Chocopi.getBlocks = function () {
             def: { params: [], type: 'chocopi_control_event' },
             paramsKeyMap: { port: 1, id: 2, status: 3 },
             class: 'chocopi_control',
-            isNotFor: ['chocopi'],
+            //isNotFor: ['chocopi'],
             event: 'control14',
             func: function(sprite, script) {
                 var port = Entry.Chocopi.getport(10, script.getField('port'));

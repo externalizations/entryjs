@@ -152,7 +152,7 @@ Entry.EV3.getBlocks = function() {
                 RGB: 1,
             },
             class: 'ev3_sensor',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var port = script.getStringField('PORT', script);
                 var rgb = script.getStringField('RGB', script);
@@ -217,7 +217,7 @@ Entry.EV3.getBlocks = function() {
                 PORT: 0,
             },
             class: 'ev3_sensor',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var port = script.getStringField('PORT', script);
                 var portData = Entry.hw.getDigitalPortValue(script.getNumberField('PORT', script));
@@ -278,7 +278,7 @@ Entry.EV3.getBlocks = function() {
                 DEGREE: 2,
             },
             class: 'ev3_output',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var port = script.getStringField('PORT', script);
                 var degree = script.getValue('DEGREE', script);
@@ -338,7 +338,7 @@ Entry.EV3.getBlocks = function() {
                 VALUE: 1,
             },
             class: 'ev3_output',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var port = script.getStringField('PORT', script);
                 var value = script.getValue('VALUE', script);
@@ -401,7 +401,7 @@ Entry.EV3.getBlocks = function() {
                 VALUE: 2,
             },
             class: 'ev3_output',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var sq = Entry.hw.sendQueue;
                 var port = script.getStringField('PORT', script);
@@ -462,7 +462,7 @@ Entry.EV3.getBlocks = function() {
                 PORT: 0,
             },
             class: 'ev3_sensor',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 var port = script.getStringField('PORT', script);
                 var portData = Entry.hw.getDigitalPortValue(script.getNumberField('PORT', script));
@@ -508,7 +508,7 @@ Entry.EV3.getBlocks = function() {
                 BUTTON: 0,
             },
             class: 'ev3_sensor',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 const buttonValue = script.getStringField('BUTTON', script);
                 var buttonData = Entry.hw.getDigitalPortValue(buttonValue);
@@ -561,7 +561,7 @@ Entry.EV3.getBlocks = function() {
                 COLOR: 0,
             },
             class: 'ev3_output',
-            isNotFor: ['EV3'],
+            //isNotFor: ['EV3'],
             func: function(sprite, script) {
                 Entry.hw.sendQueue.STATUS_COLOR = script.getStringField('COLOR', script);
             },
