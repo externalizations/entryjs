@@ -2,6 +2,7 @@
 let ack = 0;
 let count =0;
 let lastData = [];
+
 function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
