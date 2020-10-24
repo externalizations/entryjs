@@ -440,7 +440,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
             paramsKeyMap: {},
             class: 'geni_input',
-            ////isNotFor: ['GENIBOT'],
+            isNotFor: ['GENIBOT'],
             func: function(sprite, script) {
                 var portData = Entry.hw.portData['BUTTON'];
                 console.log('BUTTON');
@@ -492,7 +492,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: function(sprite, script) {
                 console.log('setRobotSpeedItem');
                 const speed = script.getStringField('SPEED', script);
@@ -558,7 +558,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('DIRECTION', script));
                 console.log(script.getStringField('DISTANCE', script));
@@ -629,7 +629,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('DIRECTION', script));
                 console.log(script.getStringField('ANGLE', script));
@@ -714,7 +714,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: function(sprite, script) {
                 console.log(script.getStringField('VELOCITY1', script));
                 console.log(script.getStringField('VELOCITY2', script));
@@ -752,7 +752,7 @@ Entry.GENIBOT.getBlocks = function() {
             paramsKeyMap: {},
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: function(sprite, script) {
 
                 Entry.hw.sendQueue.STOP_MOVING = {
@@ -814,7 +814,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('VELOCITY', script));
                 console.log(script.getStringField('DISTANCE', script));
@@ -886,7 +886,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('VELOCITY', script));
                 console.log(script.getStringField('ANGLE', script));
@@ -938,7 +938,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('ACTION', script));
                 const ACTION = script.getStringField('ACTION', script);
@@ -998,7 +998,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log('script', script);
                 const side = script.getStringField('SIDE', script);
@@ -1106,7 +1106,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 const SIDE = script.getStringField('SIDE', script);
                 const COLOR = script.getStringField('COLOR', script);
@@ -1180,7 +1180,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 console.log(script.getStringField('VOLUME', script));
                 const VOLUME = script.getStringField('VOLUME', script);
@@ -1228,7 +1228,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 const TEMPO = script.getNumberValue('TEMPO', script);
 
@@ -1283,7 +1283,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 const INSTRUMENT = script.getStringField('INSTRUMENT', script);
 
@@ -1374,7 +1374,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
 
             class: 'geni_output',
-            // //isNotFor:['genibot'],
+            isNotFor:['genibot'],
             func: async function(sprite, script) {
                 const BEATS = script.getStringField('BEATS', script);
                 const NOTE = script.getStringField('NOTE', script);
@@ -1421,7 +1421,7 @@ Entry.GENIBOT.getBlocks = function() {
                 PORT: 0,
             },
             class: 'geni_input',
-            //isNotFor: ['genibot'],
+            isNotFor: ['genibot'],
             func: function(sprite, script) {
                 let port = script.getStringField('PORT');
                 console.log("port",port);
@@ -1446,7 +1446,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
             paramsKeyMap: {},
             class: 'geni_input',
-            //isNotFor: ['genibot'],
+            isNotFor: ['genibot'],
             func: function(sprite, script) {
                 const ACC_TILT = Entry.hw.getDigitalPortValue('ACC_TILT');
                 const tilt = ACC_TILT['tilt'];
@@ -1476,7 +1476,7 @@ Entry.GENIBOT.getBlocks = function() {
             },
             paramsKeyMap: {},
             class: 'geni_input',
-            //isNotFor: ['genibot'],
+            isNotFor: ['genibot'],
             func: function(sprite, script) {
                 const OIDCODE = Entry.hw.getDigitalPortValue('OIDCODE');
                 console.log('OIDCODE', OIDCODE);
