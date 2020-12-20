@@ -1,7 +1,8 @@
 'use strict';
-let ack = 0;
+let ack = 1 ;
 let count =0;
 let lastData = [];
+let first = false;
 
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -43,11 +44,17 @@ Entry.GENIBOT = {
         //     Entry.hw.sendQueue.readablePorts.push(port);
         // }
         // Entry.hw.update();
+        /*Entry.hw.sendQueue.SET_LED_COLOR = {
+            'SIDE': 0xff,
+            'COLOR': [0, 0, 255],
+            'ACK': ack++,
+        };*/
+        //ack = 0;
     },
     // dataHandler: function(data) {
     //     console.log("dataHandler",data);
     // },
-    afterReceive: function(pd) {
+    afterReceive: async function(pd) {
         // console.log("HELLO I received",pd);
         if(pd['log']){
             const a = pd['log'];
@@ -290,7 +297,7 @@ const en = {
     'genibot.oidCode': 'oid code',
     'genibot.getButtonPressed': 'when button pressed',
     'genibot.steppersSpeed.slow': 'slow',
-    'genibot.steppersSpeed.normal': 'x1',
+    'genibot.steppersSpeed.normal': 'normal',
     'genibot.steppersSpeed.fast': 'fast',
     'genibot.instrument.piano': 'piano',
     'genibot.instrument.flute': 'flute',
@@ -497,14 +504,17 @@ Entry.GENIBOT.getBlocks = function() {
 
             class: 'geni_output',
             //isNotFor:['genibot'],
-            func: function(sprite, script) {
-                console.log('setRobotSpeedItem');
+            func: async function(sprite, script) {
+
                 const speed = script.getStringField('SPEED', script);
+                console.log('setRobotSpeedItem',speed);
                 if (speed) {
                     Entry.hw.sendQueue.SET_ROBOT_SPEED_ITEM = {
                         'SPEED': speed,
+                        'ACK': ack++,
                     };
                 }
+                await sleep(1000);
             },
         },
         moveDistance: {
@@ -823,7 +833,7 @@ Entry.GENIBOT.getBlocks = function() {
                 console.log(script.getStringField('VELOCITY', script));
                 console.log(script.getStringField('DISTANCE', script));
                 const VELOCITY = script.getStringField('VELOCITY', script);
-                const DISTANCE = script.getStringField('DISTANCE', script);
+                const DISTANCE = script.getNumberValue('DISTANCE')//Field('DISTANCE', script);
                 if (VELOCITY && DISTANCE) {
                     Entry.hw.sendQueue.MOTION_GO_DISTANCE = {
                         'VELOCITY': VELOCITY,
@@ -896,7 +906,7 @@ Entry.GENIBOT.getBlocks = function() {
                 console.log(script.getStringField('ANGLE', script));
 
                 const VELOCITY = script.getStringField('VELOCITY', script);
-                const ANGLE = script.getStringField('ANGLE', script);
+                const ANGLE = script.getNumberValue('ANGLE', script);
                 if (VELOCITY && ANGLE) {
                     Entry.hw.sendQueue.MOTION_ROTATE_ANGLE = {
                         'VELOCITY': VELOCITY,
@@ -1083,10 +1093,118 @@ Entry.GENIBOT.getBlocks = function() {
                     arrowColor: EntryStatic.colorSet.arrow.default.HARDWARE,
                 },
                 {
+                    type: 'Dropdown',
+                    options: [['1','1'],
+                        ['2','2'],
+                        ['3','3'],
+                        ['4','4'],
+                        ['5','5'],
+                        ['6','6'],
+                        ['7','7'],
+                        ['8','8'],
+                        ['9','9'],
+                        ['10','10'],
+                        ['11','11'],
+                        ['12','12'],
+                        ['13','13'],
+                        ['14','14'],
+                        ['15','15'],
+                        ['16','16'],
+                        ['17','17'],
+                        ['18','18'],
+                        ['19','19'],
+                        ['20','20'],
+                        ['21','21'],
+                        ['22','22'],
+                        ['23','23'],
+                        ['24','24'],
+                        ['25','25'],
+                        ['26','26'],
+                        ['27','27'],
+                        ['28','28'],
+                        ['29','29'],
+                        ['30','30'],
+                        ['31','31'],
+                        ['32','32'],
+                        ['33','33'],
+                        ['34','34'],
+                        ['35','35'],
+                        ['36','36'],
+                        ['37','37'],
+                        ['38','38'],
+                        ['39','39'],
+                        ['40','40'],
+                        ['41','41'],
+                        ['42','42'],
+                        ['43','43'],
+                        ['44','44'],
+                        ['45','45'],
+                        ['46','46'],
+                        ['47','47'],
+                        ['48','48'],
+                        ['49','49'],
+                        ['50','50'],
+                        ['51','51'],
+                        ['52','52'],
+                        ['53','53'],
+                        ['54','54'],
+                        ['55','55'],
+                        ['56','56'],
+                        ['57','57'],
+                        ['58','58'],
+                        ['59','59'],
+                        ['60','60'],
+                        ['61','61'],
+                        ['62','62'],
+                        ['63','63'],
+                        ['64','64'],
+                        ['65','65'],
+                        ['66','66'],
+                        ['67','67'],
+                        ['68','68'],
+                        ['69','69'],
+                        ['70','70'],
+                        ['71','71'],
+                        ['72','72'],
+                        ['73','73'],
+                        ['74','74'],
+                        ['75','75'],
+                        ['76','76'],
+                        ['77','77'],
+                        ['78','78'],
+                        ['79','79'],
+                        ['80','80'],
+                        ['81','81'],
+                        ['82','82'],
+                        ['83','83'],
+                        ['84','84'],
+                        ['85','85'],
+                        ['86','86'],
+                        ['87','87'],
+                        ['88','88'],
+                        ['89','89'],
+                        ['90','90'],
+                        ['91','91'],
+                        ['92','92'],
+                        ['93','93'],
+                        ['94','94'],
+                        ['95','95'],
+                        ['96','96'],
+                        ['97','97'],
+                        ['98','98'],
+                        ['99','99'],
+                        ['100','100'],
+                    ],
+                    value: '100',
+                    fontSize: 11,
+                    bgColor: EntryStatic.colorSet.block.darken.HARDWARE,
+                    arrowColor: EntryStatic.colorSet.arrow.default.HARDWARE,
+                },
+                /*{
                     type: 'Block',
                     accept: 'string',
                     defaultType: 'number',
-                },
+                },*/
                 {
                     type: 'Indicator',
                     img: 'block_icon/hardware_icon.svg',
@@ -1095,11 +1213,11 @@ Entry.GENIBOT.getBlocks = function() {
             ],
             events: {},
             def: {
-                params: [null, null,
-                    {
+                params: [null, null, null
+                    /*{
                         type: 'number',
                         params: ['100'],
-                    },
+                    },*/
                 ],
                 type: 'setLedColorName',
             },
@@ -1114,7 +1232,8 @@ Entry.GENIBOT.getBlocks = function() {
             func: async function(sprite, script) {
                 const SIDE = script.getStringField('SIDE', script);
                 const COLOR = script.getStringField('COLOR', script);
-                const COLOR_BRIGHTNESS = script.getNumberValue('COLOR_BRIGHTNESS', script);
+                const COLOR_BRIGHTNESS = script.getStringField('COLOR_BRIGHTNESS', script);
+                // const COLOR_BRIGHTNESS = script.getNumberValue('COLOR_BRIGHTNESS', script);
                 console.log('SIDE', SIDE);
                 console.log('COLOR', COLOR);
                 console.log('COLOR_BRIGHTNESS', COLOR_BRIGHTNESS);
@@ -1124,7 +1243,7 @@ Entry.GENIBOT.getBlocks = function() {
                     Entry.hw.sendQueue.SET_LED_COLOR_NAME = {
                         'LED': SIDE,
                         'COLOR_NAME': COLOR,
-                        'COLOR_BRIGHTNESS': COLOR_BRIGHTNESS,
+                        'COLOR_BRIGHTNESS': Number(COLOR_BRIGHTNESS),
                         'ACK': ack++,
                     };
                     /*
