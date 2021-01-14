@@ -3,6 +3,14 @@ let ack = 1 ;
 let count =0;
 let lastData = [];
 let first = false;
+let music ={
+    tempo: 100,
+}
+
+function countNoteLength(noteId) {
+    const noteBPM = [240, 120, 180, 60, 90, 30, 45, 15]; // Beat per miniutes
+    return noteBPM[noteId] ? (noteBPM[noteId] / music.tempo) : 2.4; // Duration in seconds
+}
 
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -343,11 +351,11 @@ const en = {
     'genibot.instrument.note.code.highFa': 'highFa',
     'genibot.instrument.beat.whole': 'whole',
     'genibot.instrument.beat.half': 'half',
-    'genibot.instrument.beat.dottedHalf': 'dotted half',
+    'genibot.instrument.beat.dottedHalf': 'dottedHalf',
     'genibot.instrument.beat.quarter': 'quarter',
-    'genibot.instrument.beat.dottedQuarter': 'dotted quarter',
+    'genibot.instrument.beat.dottedQuarter': 'dottedQuarter',
     'genibot.instrument.beat.eight': 'eight',
-    'genibot.instrument.beat.dottedEight': 'dotted eight',
+    'genibot.instrument.beat.dottedEight': 'dottedEight',
     'genibot.instrument.beat.sixteenth': 'sixteenth',
 };
 Entry.GENIBOT.setLanguage = function() {
@@ -414,7 +422,7 @@ Entry.GENIBOT.blockMenuBlocks = [
     'setLedColor',
     'setLedColorName',
     'setSpeakerVolume',
-    'setTempo',
+    // 'setTempo',
     'setInstrument',
     'playNote',
     'playNoteKey',
@@ -817,7 +825,7 @@ Entry.GENIBOT.getBlocks = function() {
                 params: [null,
                     {
                         type: 'number',
-                        params: ['6'],
+                        params: ['0~30'],
                     },
                 ],
                 type: 'motionGoDistance',
@@ -833,8 +841,17 @@ Entry.GENIBOT.getBlocks = function() {
                 console.log(script.getStringField('VELOCITY', script));
                 console.log(script.getStringField('DISTANCE', script));
                 const VELOCITY = script.getStringField('VELOCITY', script);
+                const DISTANCE_ANY = script.getValue('DISTANCE')
                 const DISTANCE = script.getNumberValue('DISTANCE')//Field('DISTANCE', script);
+
+                if(isNaN(String(DISTANCE_ANY)) || Number(DISTANCE) < 0 || Number(DISTANCE)>30) {
+                    alert("0~30 사이에 값만 입력할수 있습니다.")
+                    throw "error"
+                    // return script.callReturn();
+                }
                 if (VELOCITY && DISTANCE) {
+
+
                     Entry.hw.sendQueue.MOTION_GO_DISTANCE = {
                         'VELOCITY': VELOCITY,
                         'DISTANCE': DISTANCE,
@@ -889,7 +906,7 @@ Entry.GENIBOT.getBlocks = function() {
                 params: [null,
                     {
                         type: 'number',
-                        params: ['90'],
+                        params: ['0~360'],
                     },
                 ],
                 type: 'motionRotateAngle',
@@ -906,7 +923,13 @@ Entry.GENIBOT.getBlocks = function() {
                 console.log(script.getStringField('ANGLE', script));
 
                 const VELOCITY = script.getStringField('VELOCITY', script);
+                const ANGLE_ANY = script.getValue('ANGLE')
                 const ANGLE = script.getNumberValue('ANGLE', script);
+
+                if(isNaN(ANGLE_ANY) || Number(ANGLE) < 0 || Number(ANGLE) > 360){
+                    alert("0~360 사이에 값만 입력할수 있습니다.");
+                    throw 'error'
+                }
                 if (VELOCITY && ANGLE) {
                     Entry.hw.sendQueue.MOTION_ROTATE_ANGLE = {
                         'VELOCITY': VELOCITY,
@@ -1503,6 +1526,10 @@ Entry.GENIBOT.getBlocks = function() {
                 const NOTE = script.getStringField('NOTE', script);
                 console.log('BEATS', BEATS);
                 console.log('NOTE', NOTE);
+
+                const noteLabel = ['whole', 'half', 'dottedHalf', 'quarter', 'dottedQuarter', 'eight', 'dottedEight', 'sixteenth'];
+                const noteId = noteLabel.findIndex(element => element === BEATS);
+
                 if (BEATS && NOTE) {
                     console.log('playNote', script);
 
@@ -1513,7 +1540,11 @@ Entry.GENIBOT.getBlocks = function() {
                     };
                 }
                 // Entry.hw.sendQueue.COLOR = [rgb.r,rgb.g,rgb.b];
-                await sleep(50);
+                // await sleep(50);
+
+                console.log("Sleep B4 ")
+                await sleep(countNoteLength(noteId) * 1000 + 500) ;
+                console.log('Sleep After');
                 return script.callReturn();
 
             },
