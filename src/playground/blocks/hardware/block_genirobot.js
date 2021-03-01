@@ -7,6 +7,20 @@ let music ={
     tempo: 100,
 }
 
+const distanceError = (2 * 1000 * 0.81) / (3.141592 * 3.2 * 1.25);
+// this.runtime = runtime;
+const STEPPER_RATE = {
+    SLOW: 900,
+    NORMAL: 950,
+    FAST: 1000,
+};
+
+const motion = {
+    stepRate: STEPPER_RATE.NORMAL,
+    distanceMultiplier: distanceError,
+    angleMultiplier: (distanceError * 3.141592 * 5.0 * 1.01 / 360),
+};
+
 function countNoteLength(noteId) {
     const noteBPM = [240, 120, 180, 60, 90, 30, 45, 15]; // Beat per miniutes
     return noteBPM[noteId] ? (noteBPM[noteId] / music.tempo) : 2.4; // Duration in seconds
@@ -522,6 +536,19 @@ Entry.GENIBOT.getBlocks = function() {
                         'ACK': ack++,
                     };
                 }
+                let speedInt = STEPPER_RATE.NORMAL;
+                switch (speed) {
+                    case 'slow':
+                        speedInt = STEPPER_RATE.SLOW;
+                        break;
+                    case 'normal':
+                        speedInt = STEPPER_RATE.NORMAL;
+                        break;
+                    case 'fast':
+                        speedInt = STEPPER_RATE.FAST;
+                        break;
+                }
+                motion.stepRate = speedInt;
                 await sleep(1000);
             },
         },
@@ -588,6 +615,8 @@ Entry.GENIBOT.getBlocks = function() {
                 const distance = script.getStringField('DISTANCE', script);
                 console.log('moveDistance');
                 // const speed = script.getStringField('SPEED',script);
+
+
                 if (direction && distance) {
                     Entry.hw.sendQueue.MOVE_DISTANCE = {
                         'DIRECTION': direction,
@@ -596,7 +625,14 @@ Entry.GENIBOT.getBlocks = function() {
                     };
                 }
 
-                await sleep(10);
+                let stepRate =  motion.stepRate;
+                if (direction == 'front') {
+                    stepRate *= 1;
+                } else {
+                    stepRate *= -1;
+                }
+                let stepTime = (distance * motion.distanceMultiplier / (Math.abs(stepRate) / (Math.abs(stepRate) * -0.01 + 11)))  * 1000;
+                await sleep(stepTime);
                 return script.callReturn();
             },
         },
@@ -1386,7 +1422,7 @@ Entry.GENIBOT.getBlocks = function() {
                     };
                 }
                 // Entry.hw.sendQueue.COLOR = [rgb.r,rgb.g,rgb.b];
-                await sleep(10);
+                // await sleep(10);
                 return script.callReturn();
 
             },
@@ -1543,7 +1579,8 @@ Entry.GENIBOT.getBlocks = function() {
                 // await sleep(50);
 
                 console.log("Sleep B4 ")
-                await sleep(countNoteLength(noteId) * 1000 + 500) ;
+                // await sleep(50)
+                await sleep((countNoteLength(noteId) * 1000)  ) ;
                 console.log('Sleep After');
                 return script.callReturn();
 
